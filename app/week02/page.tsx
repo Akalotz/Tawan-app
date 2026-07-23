@@ -1,12 +1,14 @@
 import Headder from "../components/header";
 import Footer from "../components/footer";
 
+
 export default function Mypage () {
     
     return (
       <>
+      <Headder></Headder>
         <div>
-        <Headder></Headder>
+        
         
         
         <section className="relative bg-cover bg-center h-screen flex items-center justify-center text-center" style={{ backgroundImage: `url('xxx')` }}>
