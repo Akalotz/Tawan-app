@@ -14,7 +14,11 @@ export default function MyToDoList(){
     const [numOfTasks, setNoft] = useState(Tasks.length);
     const [status , setStatus] = useState(null);
     const [open, setOpen] = useState(false);
+    const [editingTask,setEditingTask] = useState(null);
     const [selectedTask, setSelectedTask] = useState(null); 
+
+    const resetEditingTask = () => setEditingTask(null);
+    
 
     const filterTasks = 
         status == null ? Tasks 
@@ -32,13 +36,37 @@ export default function MyToDoList(){
         if (active) 
             return <span style={{ color: "green" }}>กำลังศึกษาอยู่</span>;
         return <span style={{ color: "red" }}>ไม่ได้ศึกษาอยู่</span>;
-    }
+    };
+
+    const Status = (sta : boolean) => {
+        if (sta)
+            return <span style={{color: "green"}}>ทำแล้ว</span>;
+
+        return <span style={{color: "red"}}>ไม่ทำ</span>;    
+    };
 
     const onEdit = (t) => {
-    }
+        setEditingTask(t);
+    };
 
+    const updateTask = (id, title, status) => {
+
+        setTasks(
+            tasks => tasks.map(
+                t => t.id === id ?
+                {...t,
+                title: title ,
+                status: status
+                } : t
+            ));
+            setEditingTask(null);
+    }
     const onDelete = (id) => {
-        alert(`คุณต้องการลบข้อมูล รหัส ${id}?`);
+        // alert(`คุณต้องการลบข้อมูล รหัส ${id}?`);
+        const updateTask = Tasks.filter(
+            item => item.id  != id
+        );
+        setTasks(updateTask);
     }
 
     const tmpTdl = filterTasks.map((item, index) => {
@@ -97,7 +125,12 @@ export default function MyToDoList(){
                 </div>
             </div>
 
-            <ToDoForm AddTask={AddTask}/>
+            <ToDoForm 
+            AddTask={AddTask}
+            editingTask={editingTask}
+            updateTask={updateTask}
+            resetEditingTask={resetEditingTask}
+            />
 
             <div className="space-y-3 flex justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
                 <div>จำนวนงานที่ต้องทำ {numOfTasks} รายการ</div>
@@ -127,7 +160,7 @@ export default function MyToDoList(){
                 )}
             </Modal>
                
-            <Footer></Footer>
+            <Footer/>
         </>
     );
 }

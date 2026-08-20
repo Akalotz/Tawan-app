@@ -1,9 +1,9 @@
 "use Client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
-export default function ToDoForm({ AddTask }) {
+export default function ToDoForm({ AddTask, editingTask, updateTask, resetEditingTask }) {
 
     const [title, settitle] = useState('');
     const [taskStatus, setTaskStatus] = useState(false);
@@ -11,13 +11,30 @@ export default function ToDoForm({ AddTask }) {
     const handleCancel = (e)=> {
         settitle('');
         setTaskStatus(false);
+        resetEditingTask();
+
+        useEffect( () =>{
+           
+            if(editingTask) {
+               const {title , status} = editingTask;
+              settitle(title);
+              setTaskStatus(status);
+            }else {
+              settitle("");
+              setTaskStatus(false);
+              
+            }
+        },[editingTask]);
     }
 
     const handleSubmit = (e)=> {
-        e.eventDefault();
+        e.preventDefault();
 
         if(!title.trim() ) return;
 
+        if(editingTask)
+          updateTask(editingTask.id, title , taskStatus);
+        else
         AddTask (title, taskStatus);
 
         handleCancel;
@@ -49,9 +66,11 @@ export default function ToDoForm({ AddTask }) {
           </label>
         </div>
         <div className="flex mt-4 gap-2 justify-center">
-          <button className="bg-blue-600 text-white px-4 py-1 rounded">
-            Add New Task
+
+          <button  className="bg-blue-600 text-white px-4 py-1 rounded">
+           {editingTask ? 'update task' : "Add new Task"}
           </button>
+
           <button className="bg-gray-600 text-white px-4 rounded" onClick= {handleCancel}>
             Cancel
           </button>
