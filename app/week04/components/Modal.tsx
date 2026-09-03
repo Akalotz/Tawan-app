@@ -3,11 +3,8 @@ export default function  Modal ({ open, onCLose, children}) {
     return (
          <div
       onClick={onCLose}
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-colors ${
-        open ? 'visible bg-black/40 backdrop-blur-sm' : 'invisible'
-      }`}
-    >
-      {/* Modal Container */}
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-colors ${ open ? 'visible bg-black/40 backdrop-blur-sm' : 'invisible'}`}>
+  {/* Modal Container */}
       <div
         onClick={(e)=> e.stopPropagation() } // Prevents closing when clicking inside
         className={`w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left shadow-xl transition-all ${
